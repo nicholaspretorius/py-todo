@@ -45,6 +45,11 @@ My local postgress setup is complicated, as such, I have Postgres running on por
 #### Migrations
 
 * `flask db init` setup migrations for the app
+* `dropdb todoapp -p 5433` drop the db (so flask-migrate can be aware of it)
+* `createdb todoapp -p 5433` create db
+* `flask db migrate` migrate the db
+* `flask db upgrade` run upgrade
+* `flask db downgrade` rollback upgrade
 
 #### Linting
 
