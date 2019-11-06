@@ -7,7 +7,9 @@ To run the app:
 * `python3 -m venv env` set the virtual environment for Pyhton // v3.7.4 for this example
 * `source env/bin/activate` activate the venv
 * `pip install -r requirements.txt` to install dependencies
-* `python3 app.py` to run the app
+* `export FLASK_ENV=development` to put app in debug mode [Optional]
+* `python3 app.py` to run the app (http://127.0.0.1:5000/ or http://localhost:5000)
+* Press Ctrl + C to quite the app
 * `deactivate` de-activate the venv
 
 
@@ -16,6 +18,8 @@ To run the app:
 Steps taken during development: 
 
 * `python3 -m venv env` set the virtual environment for Pyhton // v3.7.4 for this example
+* `export FLASK_ENV=development` to put app in debug mode
+* `export FLASK_ENV=` to exit debug mode (after Ctrl + C quits the app)
 * `source env/bin/activate` activate the venv
 * `pip install Flask` (note to self)
 * `pip freeze > requirements.txt` writes the dependencies to file
