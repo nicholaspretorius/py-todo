@@ -29,7 +29,19 @@
       <h4>Todos</h4>
       <ul id="todos">
         {% for todo in todos %}
-        <li>{{ todo.description }}</li>
+        <li>
+          <input
+            type="checkbox"
+            name="complete"
+            id="complete"
+            {%if
+            todo.complete
+            %}
+            checked
+            {%endif%}
+          />
+          {{ todo.description }}
+        </li>
         {% endfor %}
       </ul>
     </div>
