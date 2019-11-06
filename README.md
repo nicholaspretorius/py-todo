@@ -22,6 +22,29 @@ Steps taken during development:
 * `export FLASK_ENV=` to exit debug mode (after Ctrl + C quits the app)
 * `source env/bin/activate` activate the venv
 * `pip install Flask` (note to self)
+* `pip install flask-sqlalchemy`
+* `pip install psycopg2`
+* `pip install Flask` (note to self)
 * `pip freeze > requirements.txt` writes the dependencies to file
 * `deactivate` de-activate the venv when done developing
 * /env folder is like 'node_modules'
+
+#### Database
+
+My local postgress setup is complicated, as such, I have Postgres running on port 5433.
+
+* `dropdb todoapp -p 5433 && createdb todoapp -p 5433` (server must not be running to do this)
+* `psql -p 5433`
+* `\c todoapp` connects to the db
+* `\dt` displays the tables in the db 
+* `\d todos` displays the schema of the 'todos' table
+* `INSERT INTO todos (description) VALUES ('Todo 1');`
+* `SELECT * FROM todos`
+
+#### Linting
+
+Developer in VS Code with flake8 linting. Code > Preferences > type in settings.json and click on 'Edit settings.json', add the [following](https://stackoverflow.com/a/50177174/4847180): 
+
+```"python.linting.flake8Args": [
+    "--max-line-length=120",
+  ],```
