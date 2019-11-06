@@ -24,7 +24,7 @@ Steps taken during development:
 * `pip install Flask` (note to self)
 * `pip install flask-sqlalchemy`
 * `pip install psycopg2`
-* `pip install Flask` (note to self)
+* `pip install Flask-Migrate`
 * `pip freeze > requirements.txt` writes the dependencies to file
 * `deactivate` de-activate the venv when done developing
 * /env folder is like 'node_modules'
@@ -40,6 +40,11 @@ My local postgress setup is complicated, as such, I have Postgres running on por
 * `\d todos` displays the schema of the 'todos' table
 * `INSERT INTO todos (description) VALUES ('Todo 1');`
 * `SELECT * FROM todos`
+
+
+#### Migrations
+
+* `flask db init` setup migrations for the app
 
 #### Linting
 
