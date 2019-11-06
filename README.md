@@ -38,7 +38,7 @@ My local postgress setup is complicated, as such, I have Postgres running on por
 * `\c todoapp` connects to the db
 * `\dt` displays the tables in the db 
 * `\d todos` displays the schema of the 'todos' table
-* `INSERT INTO todos (description) VALUES ('Todo 1');`
+* `INSERT INTO todos (description, complete) VALUES ('Todo 1', False);`
 * `SELECT * FROM todos`
 
 
