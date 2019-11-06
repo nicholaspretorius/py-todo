@@ -45,6 +45,6 @@ My local postgress setup is complicated, as such, I have Postgres running on por
 
 Developer in VS Code with flake8 linting. Code > Preferences > type in settings.json and click on 'Edit settings.json', add the [following](https://stackoverflow.com/a/50177174/4847180): 
 
-```"python.linting.flake8Args": [
+`"python.linting.flake8Args": [
     "--max-line-length=120",
-  ],```
+],`
