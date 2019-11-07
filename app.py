@@ -36,11 +36,6 @@ class TodoList(db.Model):
 # db.create_all()
 
 
-@app.route('/')
-def index():
-    return render_template('index.html', todos=Todo.query.order_by('id').all())
-
-
 @app.route('/todos/create', methods=['POST'])
 def create_todo():
     error = False
@@ -111,6 +106,16 @@ def delete_todo(todo_id):
     else:
         return jsonify({'success': True})
         # return redirect(url_for('index'))
+
+
+@app.route('/')
+def index():
+    return redirect(url_for('get_list_todos', list_id=1))
+
+
+@app.route('/lists/<list_id>')
+def get_list_todos(list_id):
+    return render_template('index.html', todos=Todo.query.filter_by(list_id=list_id).order_by('id').all())
 
 
 if __name__ == '__main__':
