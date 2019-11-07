@@ -18,7 +18,7 @@ class Todo(db.Model):
     complete = db.Column(db.Boolean, nullable=False, default=False)
 
     def __repr__(self):
-        return f'<Todo ID: {self.id}, name: {self.description}'
+        return f'<Todo ID: {self.id}, name: {self.description}, complete: {self.complete}>'
 
 
 # db.create_all()
@@ -26,7 +26,7 @@ class Todo(db.Model):
 
 @app.route('/')
 def index():
-    return render_template('index.html', todos=Todo.query.all())
+    return render_template('index.html', todos=Todo.query.order_by('id').all())
 
 
 @app.route('/todos/create', methods=['POST'])
@@ -57,6 +57,27 @@ def create_todo():
     #     #     'description': todo.description
     #     # })
     #     return jsonify(body)
+
+
+@app.route('/todos/<todo_id>/set-complete', methods=['POST'])
+def update_todo(todo_id):
+    error = False
+    try:
+        complete = request.get_json()['complete']
+        todo = Todo.query.get(todo_id)
+        print('Todo: ', todo)
+        todo.complete = complete
+        db.session.commit()
+    except():
+        db.session.rollback()
+        error = True
+        print(sys.exc_info())
+    finally:
+        db.session.close()
+    if error:
+        abort(500)
+    else:
+        return redirect(url_for('index'))
 
 
 if __name__ == '__main__':
