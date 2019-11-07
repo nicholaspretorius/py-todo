@@ -36,10 +36,13 @@ def create_todo():
     try:
         # todo = request.form.get('description')
         description = request.get_json()['description']
-        todo = Todo(description=description)
+        todo = Todo(description=description, complete=False)
         db.session.add(todo)
         db.session.commit()
+        body['id'] = todo.id
+        body['complete'] = todo.complete
         body['description'] = todo.description
+
         # return redirect(url_for('index'))
         # 'index' is the name of the controller for route '/'
     except():
@@ -78,6 +81,24 @@ def update_todo(todo_id):
         abort(500)
     else:
         return redirect(url_for('index'))
+
+
+@app.route('/todos/<todo_id>/delete', methods=['DELETE'])
+def delete_todo(todo_id):
+    error = False
+    try:
+        Todo.query.filter_by(id=todo_id).delete()
+        db.session.commit()
+    except():
+        db.session.rollback()
+        error = True
+    finally:
+        db.session.close()
+    if error:
+        abort(500)
+    else:
+        return jsonify({'success': True})
+        # return redirect(url_for('index'))
 
 
 if __name__ == '__main__':

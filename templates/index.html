@@ -12,6 +12,19 @@
       ul {
         list-style: none;
         padding-left: 0;
+        width: 200px;
+      }
+      li {
+        clear: both;
+      }
+      li button {
+        -webkit-appearance: none;
+        border: none;
+        outline: none;
+        color: red;
+        float: right;
+        cursor: pointer;
+        font-size: 16px;
       }
     </style>
   </head>
@@ -47,12 +60,14 @@
             {%endif%}
           />
           {{ todo.description }}
+          <button class="delete-todo" data-id="{{ todo.id }}">&cross;</button>
         </li>
         {% endfor %}
       </ul>
     </div>
 
     <script>
+      let deleteBtns;
       const checkboxes = document.querySelectorAll(".check-complete");
       for (let i = 0; i < checkboxes.length; i++) {
         const checkbox = checkboxes[i];
@@ -95,17 +110,58 @@
           })
           .then(function(json) {
             console.log("JSON: ", json);
-            const item = document.createElement("li");
-            item.innerHTML = json["description"];
-            document.getElementById("todos").appendChild(item);
+            const li = document.createElement('li');
+          const checkbox = document.createElement('input');
+          checkbox.className = 'check-complete';
+          checkbox.type = 'checkbox';
+          checkbox.setAttribute('data-id', json.id);
+          checkbox.setAttribute('name', 'complete');
+          checkbox.setAttribute('id', 'complete');
+          li.appendChild(checkbox);
+
+          const text = document.createTextNode(' ' + json.description);
+          li.appendChild(text);
+
+          const deleteBtn = document.createElement('button');
+          deleteBtn.className = 'delete-todo';
+          deleteBtn.setAttribute('data-id', json.id);
+          deleteBtn.innerHTML = '&cross;';
+          li.appendChild(deleteBtn);
+          
+
+          document.getElementById('todos').appendChild(li);
             document.getElementById("error").className = "hidden";
             document.getElementById("description").value = "";
+            deleteBtns = document.querySelectorAll(".delete-todo");
+          console.log("Delete btns add: ", deleteBtns);
           })
           .catch(function(e) {
             console.error(e);
             document.getElementById("error").className = "";
           });
       };
+
+      deleteBtns = document.querySelectorAll(".delete-todo");
+      console.log("Delete btns load: ", deleteBtns);
+      for (let i = 0; i < deleteBtns.length; i++) {
+        const deleteBtn = deleteBtns[i];
+        deleteBtn.onclick = function(e) {
+          console.log("Delete event: ", e);
+          const todoId = e.target.dataset.id;
+          fetch('/todos/'+ todoId + '/delete',{
+            method: 'DELETE'
+          }).then(function() {
+            console.log('Parent?', e.target);
+            const item = e.target.parentElement;
+            item.remove();
+              document.getElementById("error").className = "hidden";
+            })
+            .catch(function(e) {
+              console.error(e);
+              document.getElementById("error").className = "";
+            });
+        };
+      }
     </script>
   </body>
 </html>
