@@ -26,45 +26,62 @@
         cursor: pointer;
         font-size: 16px;
       }
+      .lists-wrapper, .todos-wrapper {
+        display: inline-block;
+        vertical-align: top;
+      }
     </style>
   </head>
   <body>
     <h3>PyTodo</h3>
     <p>A Todo app written in Python, Flask and SQLAlchemy with Jinja templates.</p>
 
-    <div>
-      <h4>Add Todo</h4>
-      <form action="/todos/create" method="POST" id="create-todo">
-        <label for="description">Description:</label>
-        <input type="text" name="description" placeholder="Enter description" id="description" />
-        <button type="submit">Add</button>
-      </form>
-      <div id="error" class="hidden">Something went wrong, please try again.</div>
-    </div>
-
-    <div>
-      <h4>Todos</h4>
-      <ul id="todos">
-        {% for todo in todos %}
-        <li>
-          <input
-            data-id="{{ todo.id }}"
-            class="check-complete"
-            type="checkbox"
-            name="complete"
-            id="complete"
-            {%if
-            todo.complete
-            %}
-            checked
-            {%endif%}
-          />
-          {{ todo.description }}
-          <button class="delete-todo" data-id="{{ todo.id }}">&cross;</button>
-        </li>
+    <div class="lists-wrapper">
+        <h4>Todo Lists</h4>
+      <ul id="lists">
+        {% for list in lists %}
+          <li>
+            <a href="/lists/{{ list.id }}">{{ list.name }}</a></li>
         {% endfor %}
       </ul>
     </div>
+
+    <div class="todos-wrapper">
+      <div class="add-todo">
+        <h4>Add Todo</h4>
+        <form action="/todos/create" method="POST" id="create-todo">
+          <label for="description">Description:</label>
+          <input type="text" name="description" placeholder="Enter description" id="description" />
+          <button type="submit">Add</button>
+        </form>
+        <div id="error" class="hidden">Something went wrong, please try again.</div>
+      </div>
+      <div>
+          <h4>{{ active_list.name }}</h4>
+          <ul id="todos">
+            {% for todo in todos %}
+            <li>
+              <input
+                data-id="{{ todo.id }}"
+                class="check-complete"
+                type="checkbox"
+                name="complete"
+                id="complete"
+                {%if
+                todo.complete
+                %}
+                checked
+                {%endif%}
+              />
+              {{ todo.description }}
+              <button class="delete-todo" data-id="{{ todo.id }}">&cross;</button>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+    </div>
+
+    
 
     <script>
       let deleteBtns;
