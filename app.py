@@ -40,7 +40,7 @@ def create_list():
     error = False
     body = {}
     try:
-        name = request.get_json()['todolist']
+        name = request.get_json()['name']
         todolist = TodoList(name=name)
         db.session.add(todolist)
         db.session.commit()

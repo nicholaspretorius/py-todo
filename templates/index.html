@@ -38,6 +38,14 @@
 
     <div class="lists-wrapper">
         <h4>Todo Lists</h4>
+
+        <div class="list-form">
+          <form action="/lists/create" method="POST" id="create-list">
+            <label for="todolist">Create List:</label>
+            <input type="text" name="todolist" id="todolist-input" data-id="{{ active_list.id }}">
+            <button type="submit">Add List</button>
+          </form>
+        </div>
       <ul id="lists">
         {% for list in lists %}
           <li>
@@ -109,6 +117,35 @@
               document.getElementById("error").className = "";
             });
         };
+      }
+
+      document.getElementById("create-list").onsubmit = function(e) {
+        e.preventDefault();
+        fetch("/lists/create", {
+          method: "POST",
+          body: JSON.stringify({
+            name: document.getElementById("todolist-input").value
+          }),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }).then(function(res) {
+          return res.json();
+        }).then(function(json) {
+          console.log("List JSON: ", json);
+          const list = document.getElementById('lists');
+          const li = document.createElement('li');
+          const link = document.createElement('a');
+          link.setAttribute('href', '/lists/'+ json.id);
+          const text = document.createTextNode(' ' + json.name);
+          link.appendChild(text);
+          li.appendChild(link);
+          list.appendChild(li);
+        })
+        .catch(function() {
+          console.error(e);
+            document.getElementById("error").className = "";
+        })
       }
 
       document.getElementById("create-todo").onsubmit = function(e) {
