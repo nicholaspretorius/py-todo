@@ -35,6 +35,28 @@ class TodoList(db.Model):
 
 # db.create_all()
 
+@app.route('/lists/create', methods=['POST'])
+def create_list():
+    error = False
+    body = {}
+    try:
+        name = request.get_json()['todolist']
+        todolist = TodoList(name=name)
+        db.session.add(todolist)
+        db.session.commit()
+        body['id'] = todolist.id
+        body['name'] = todolist.name
+    except():
+        db.session.rollback()
+        error = True
+        print(sys.exc_info)
+    finally:
+        db.session.close()
+    if error:
+        abort(500)
+    else:
+        return jsonify(body)
+
 
 @app.route('/todos/create', methods=['POST'])
 def create_todo():
